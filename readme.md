@@ -4,7 +4,12 @@
 
 - Read in general config file which describes the overall setup of the game.
     - Create a complete default config file.
+- Implement user control functions.
+    - Feed pet
+    - Play with pet
+    - Give pet medicine
 - Start menu to create a new save file, load and existing save file, or edit global options.
+- Main game play UI.
 - Man page documentation
 
 ## Changelog

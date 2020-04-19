@@ -7,7 +7,19 @@
 // returns the number of new lines that has been removed.
 int trim_newlines(char* s);
 
+// Returns a random floating point value in between min and max. The random
+// seed should be initialised at the start of the program by calling
+// srand(time(0));
 float random_float(float min, float max);
+
+// Return the highest of the 2 floating point values.
+float max_float(float x, float y);
+
+// Return the smallest of the 2 floating point values.
+float min_float(float x, float y);
+
+// The the highest of the integer values.
+int max_int(int x, int y);
 
 // Config related functions.
 
@@ -65,33 +77,65 @@ struct pet {
 
 typedef struct pet Pet;
 
-// Create a new pet. The pet will be initialised to it's default values.
+// Create a new pet with the specified name. The pet will be initialised to
+// it's default values. Any pets created with this function should be freed
+// with the free_pet function when no longer needed.
 Pet *create_pet(char *name);
 
 // Save a pet struct to a file. The format is the same as the general config.
-// See load_config.
+// See load_config. The function takes in a pointer to a Pet object p which is
+// the pet that should be saved. It also takes in a file path which is the save
+// file destination. No checks are performed when saving to the file. Any
+// existing data will be overwritten. If the file does not exist then it will be
+// created automatically. Returns 0 if the save was successful, returns -1 if an
+// error occurred.
 int save_pet(Pet *p, char *filename);
 
 // Load a pet from a save file. The format is the same as the general config.
-// see load_config.
+// see load_config. Any pets loaded via this method should be freed when they
+// are no longer needed. Use free_pet to free the dymanically allocated memory
+// from this function. This function takes in a file path to the save file that
+// should be loaded and returns a pointer to a Pet object. If the save file
+// could not be loaded then this function will return NULL.
 Pet *load_pet(char *filename);
 
 // Sets a specific pet config value based on string inputs. This functions is
 // intended to be used with the load_pet function.
+// Returns 0 if the config value was correctly set. Returns -1 if an error
+// occured. An unknown pet config key would mean this function returns -1.
 int set_pet_config(Pet *pet, char *key, char *value);
 
 // Free any dynamically allocated memory used for the passed in Pet. This
 // function should be called whenever the pet object is no longer needed.
+// Returns 0 if successful
 int free_pet(Pet *pet);
 
 // Updates the pets internal values. This function signifies the passage of
 // time. It should be called inside of a game loop.
+// Returns 0 if the pet is still alive after the update. Returns -1 if the
+// pet has dies during the update. If the pet is deceased then it's values
+// will no longer be updated.
 int update_pet(Pet *pet);
 
+// Feeds the pet in order to relieve some hunger. This function should be called
+// as part of a user action in order to keep the pet alive. If the pet is
+// deceased then the hunger values are not changed.
+// Returns 0 if the pet was able to be fed. Returns -1 if the pet could not be
+// fed. The pet cannot be fed if it is already deceased.
 int feed_pet(Pet *pet);
 
+// Play with the pet to give the pet some happiness. This function should be
+// called as part of a user action in order to keep the pet alive. If the pet
+// is deceased then the happiness values are not changed.
+// Returns 0 if the pet was able to be played with. Returns -1 if the pet
+// could not be played with. The pet cannot be played with if it is already
+// deceased.
 int play_with_pet(Pet *pet);
 
+// Give the pet some medicine in order to remove its sickness attribute and to
+// reset the current_sickness_chance stat. Returns 0 if giving the medicine was
+// successful. Returns -1 if giving the medicine failed. The user is not able
+// to give the pet medicine if it is already deceased.
 int give_medicine_to_pet(Pet *pet);
 
 #endif

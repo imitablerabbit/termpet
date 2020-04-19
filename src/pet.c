@@ -190,24 +190,6 @@ int free_pet(Pet *pet) {
     return 0;
 }
 
-float max_float(float x, float y) {
-    if (x > y)
-        return x;
-    return y;
-}
-
-float min_float(float x, float y) {
-    if (x < y)
-        return x;
-    return y;
-}
-
-int max_int(int x, int y) {
-    if (x > y)
-        return x;
-    return y;
-}
-
 int update_pet(Pet *pet) {
     if (pet->is_dead == 1)
         return -1;
@@ -250,5 +232,9 @@ int update_pet(Pet *pet) {
 
     pet->age += 1;
 
+    return 0;
+}
+
+int feed_pet(Pet *pet) {
     return 0;
 }

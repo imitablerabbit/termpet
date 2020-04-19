@@ -17,7 +17,6 @@ void print_pet(Pet *pet) {
 }
 
 int main() {
-    srand(time(0));
     Config *config;
     char *config_file = "/home/imitablerabbit/.tamagotchi/config";
 
@@ -26,12 +25,12 @@ int main() {
 
     struct timespec sleep_time, rem;
     
+    srand(time(NULL));
+
     if ((config = load_config(config_file)) < 0) {
         printf("Error: unable to load config file\n");   
         exit(1);
     }
-
-    printf("Config: pets_dir = %s\n", config->pets_dir);
 
     if (access(pet_file, R_OK) == 0) {
         pet = load_pet(pet_file);

@@ -236,5 +236,30 @@ int update_pet(Pet *pet) {
 }
 
 int feed_pet(Pet *pet) {
+    if (pet->is_dead)
+        return -1;
+
+    pet->current_hunger += 0.5;
+    pet->current_hunger = max_float(1.0, pet->current_hunger);
+    return 0;
+}
+
+int play_with_pet(Pet *pet) {
+    if (pet->is_dead)
+        return -1;
+
+    pet->current_happiness += 0.5;
+    pet->current_happiness = max_float(1.0, pet->current_happiness);
+    return 0;
+}
+
+int give_medicine_to_pet(Pet *pet) {
+    if (pet->is_dead)
+        return -1;
+
+    pet->is_sick = 0;
+    pet->current_sickness_chance = 0.001;
+    pet->health += 1;
+    pet->health = min_int(pet->max_health, pet->health);
     return 0;
 }

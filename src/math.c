@@ -17,3 +17,9 @@ int max_int(int x, int y) {
         return x;
     return y;
 }
+
+int min_int(int x, int y) {
+    if (x < y)
+        return x;
+    return y;
+}

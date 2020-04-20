@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
+
+char status_line[100];
 
 void print_pet(Pet *pet) {
     printf("\e[1;1H\e[2J");
@@ -14,17 +17,16 @@ void print_pet(Pet *pet) {
     printf("Happiness: %f\n", pet->current_happiness); 
     printf("Is Sick: %d\n", pet->is_sick); 
     printf("Is Dead: %d\n", pet->is_dead); 
+    printf("\nStatus: %s\n", status_line);
 }
 
 int main() {
     Config *config;
     char *config_file = "/home/imitablerabbit/.tamagotchi/config";
-
     Pet *pet;
     char *pet_file = "my_pet";
-
     struct timespec sleep_time, rem;
-    
+
     srand(time(NULL));
 
     if ((config = load_config(config_file)) < 0) {
@@ -43,6 +45,21 @@ int main() {
         print_pet(pet);
         update_pet(pet);
         nanosleep(&sleep_time, &rem);
+        
+        if (pet->current_hunger <= 0.5) {
+            feed_pet(pet);
+            sprintf(status_line, "Fed pet at age %d", pet->age);
+        }
+ 
+        if (pet->current_happiness <= 0.5){
+            play_with_pet(pet);
+            sprintf(status_line, "Played with pet at age %d", pet->age);
+        }
+
+        if (pet->health <= 8){
+            give_medicine_to_pet(pet);
+            sprintf(status_line, "Gave medicine to pet at age %d", pet->age);
+        }
     }
 
     if (save_pet(pet, pet_file) < 0) {

@@ -3,8 +3,10 @@
 
 // General util functions
 
-// trim_newlines will remove all new lines at the end of a string. The function
-// returns the number of new lines that has been removed.
+// trim_newlines will remove all new lines at the end of a string. The string
+// will be edited directly by moving the '\0' byte to the first '\n' byte found
+// at the end of the string. The function returns the number of new lines that
+// has been removed.
 int trim_newlines(char* s);
 
 // Returns a random floating point value in between min and max. The random
@@ -18,8 +20,11 @@ float max_float(float x, float y);
 // Return the smallest of the 2 floating point values.
 float min_float(float x, float y);
 
-// The the highest of the integer values.
+// Return the highest of the integer values.
 int max_int(int x, int y);
+
+// Return the smallest of the integer values.
+int min_int(int x, int y);
 
 // Config related functions.
 
@@ -33,18 +38,24 @@ struct config {
 typedef struct config Config;
 
 // Loads a config file into a Config struct and returns a pointer to it. A
-// config file should be a new line separeted list of config elements.
+// config file should be a new line separated list of config elements.
 // Typically each config element will be a key value pair delimited by an '='
-// character.
+// character. This function takes in a file path to the config file.
+// Returns a pointer to a Config object on success or NULL if there were any
+// errors. Any config objects created by this function should be freed when
+// no longer needed by calling free_config.
 Config *load_config(const char *filename);
 
 // Releases memory for a config struct. This should be called whenever the
-// config item is not longer needed.
+// config item is not longer needed. Returns 0 on success and -1 if any
+// errors occurred.
 int free_config(Config *config);
 
 // Sets a specific config entry based on string encodings of the values. This
 // function is used by the load_config function to populate each config field
-// in the config struct.
+// in the config struct. Returns a 0 if the config value was set correctly
+// and -1 if any errors occurred. If a key is not recognised then a -1 is
+// returned.
 int set_config(Config *config, char *key, char *value);
 
 // Pet related functions.

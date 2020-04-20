@@ -17,7 +17,7 @@ Config *load_config(const char *filename) {
 
     while(fgets(buf, CONFIG_BUFFER_SIZE, f) != NULL) {
         trim_newlines(buf);
-        key = strtok(buf, CONFIG_DELIMITER); 
+        key = strtok(buf, CONFIG_DELIMITER);
         value = strtok(NULL, CONFIG_DELIMITER);
         if (key == NULL || value == NULL)
             continue;

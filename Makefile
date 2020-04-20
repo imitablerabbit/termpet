@@ -23,7 +23,7 @@ clean:
 
 debug: ${OUT_FILE}
 	gdb ${OUT_FILE}
-	
+
 valgrind: ${OUT_FILE}
 	valgrind ${VALGRIND_OPTS} --tool=memcheck --leak-check=full \
 		--show-leak-kinds=all ./${OUT_FILE}

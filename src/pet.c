@@ -6,7 +6,7 @@
 
 Pet *create_pet(char *name) {
     Pet *pet;
-    
+
     pet = (Pet*)malloc(sizeof(Pet));
 
     pet->name = (char*)malloc(sizeof(char)*strlen(name)+1);
@@ -43,8 +43,8 @@ int save_pet(Pet *pet, char *filename) {
     if ((f = fopen(filename, "w")) == NULL)
         return -1;
 
-    fprintf(f, "name" CONFIG_DELIMITER "%s\n", pet->name); 
-    fprintf(f, "age" CONFIG_DELIMITER "%d\n", pet->age); 
+    fprintf(f, "name" CONFIG_DELIMITER "%s\n", pet->name);
+    fprintf(f, "age" CONFIG_DELIMITER "%d\n", pet->age);
 
     fprintf(f, "current_hunger" CONFIG_DELIMITER "%f\n", pet->current_hunger);
     fprintf(f, "hunger_decrease_chance" CONFIG_DELIMITER "%f\n", pet->hunger_decrease_chance);
@@ -86,7 +86,7 @@ Pet *load_pet(char *filename) {
 
     while(fgets(buf, CONFIG_BUFFER_SIZE, f) != NULL) {
         trim_newlines(buf);
-        key = strtok(buf, CONFIG_DELIMITER); 
+        key = strtok(buf, CONFIG_DELIMITER);
         value = strtok(NULL, CONFIG_DELIMITER);
         if (key == NULL || value == NULL)
             continue;
@@ -194,7 +194,7 @@ int update_pet(Pet *pet) {
     if (pet->is_dead == 1)
         return -1;
 
-    if (random_float(0.0, 1.0) < pet->hunger_decrease_chance) 
+    if (random_float(0.0, 1.0) < pet->hunger_decrease_chance)
         pet->current_hunger -= pet->hunger_decrease_amount;
 
     if (random_float(0.0, 1.0) < pet->happiness_decrease_chance)

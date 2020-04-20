@@ -2,9 +2,13 @@
 
 ## Todo
 
+- Fix the menu item names, there is no need to add space characters as padding as you can just change the background color of the option instead.
+- Secondary menu options.
+    - New pet form
+    - Load pet form/menu
 - Read in general config file which describes the overall setup of the game.
     - Create a complete default config file.
-- Start menu to create a new save file, load and existing save file, or edit global options.
+    - Config option to load save files from directory.
 - Main game play UI.
     - Tamagotchi ascii art window
     - User control menu
@@ -15,6 +19,7 @@
 
 ## Changelog
 
+- Start menu to create a new save file, load and existing save file, or edit global options.
 - Implement user control functions.
     - Feed pet
     - Play with pet

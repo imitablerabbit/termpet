@@ -1,4 +1,4 @@
-#include "tamagotchi.h"
+#include "termpet.h"
 
 #include <stdlib.h>
 #include <stdio.h>

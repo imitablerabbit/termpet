@@ -1,4 +1,4 @@
-#include "tamagotchi_ui.h"
+#include "termpet_ui.h"
 
 #include <ncurses.h>
 #include <menu.h>

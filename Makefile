@@ -9,7 +9,7 @@ SRC_DIR=src
 SRC_FILES=$(wildcard ${SRC_DIR}/*.c)
 H_FILES=$(wildcard ${SRC_DIR}/*.h)
 
-OUT_FILE=tamagotchi
+OUT_FILE=termpet
 
 VALGRIND_OPTS=--trace-children=yes --track-fds=yes
 

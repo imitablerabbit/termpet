@@ -1,4 +1,4 @@
-# Terminal Tamagotchi
+# Termpet
 
 ## Todo
 
@@ -10,7 +10,7 @@
     - Create a complete default config file.
     - Config option to load save files from directory.
 - Main game play UI.
-    - Tamagotchi ascii art window
+    - Termpet ascii art window
     - User control menu
         - Maybe need some method of keyboard interrupt for sleep. I remember seeing some half sleep function that could be used with this type of UI.
         - Maybe just create proper time based game loop which splits user input and game updates in same loop.

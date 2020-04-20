@@ -1,5 +1,5 @@
-#include "tamagotchi.h"
-#include "tamagotchi_ui.h"
+#include "termpet.h"
+#include "termpet_ui.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -23,7 +23,7 @@ void print_pet(Pet *pet) {
 
 int main() {
     Config *config;
-    char *config_file = "/home/imitablerabbit/.tamagotchi/config";
+    char *config_file = "/home/imitablerabbit/.termpet/config";
     Pet *pet;
     char *pet_file = "my_pet";
     struct timespec sleep_time, rem;

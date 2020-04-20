@@ -1,5 +1,5 @@
-#ifndef TAMAGOTCHI_H
-#define TAMAGOTCHI_H
+#ifndef TERMPET_H
+#define TERMPET_H
 
 // General util functions
 

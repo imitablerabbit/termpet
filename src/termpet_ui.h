@@ -1,5 +1,5 @@
-#ifndef TAMAGOTCHI_UI_H
-#define TAMAGOTCHI_UI_H
+#ifndef TERMPET_UI_H
+#define TERMPET_UI_H
 
 #include <ncurses.h>
 #include <form.h>
@@ -33,7 +33,7 @@ static const int item_data[] = {
 // Initialises any UI elements ready for displaying to the user.
 int init_ui();
 
-// Starts the ncurses main menu for the tamagotchi. This will allow the user to
+// Starts the ncurses main menu for the termpet. This will allow the user to
 // create a new pet or load an existing save file. This function will block
 // until the user no longer wants to play.
 // Returns -1 if there was an error playing the game. Otherwise it will return

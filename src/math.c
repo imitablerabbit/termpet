@@ -1,4 +1,4 @@
-#include "tamagotchi.h"
+#include "termpet.h"
 
 float max_float(float x, float y) {
     if (x > y)

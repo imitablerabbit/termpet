@@ -25,9 +25,8 @@ int main() {
     Config *config;
     char *config_file = "/home/imitablerabbit/.termpet/config";
 
-    Pet *pet;
     char *pet_file = "my_pet";
-    char *pet_name;
+    Pet *pet;
 
     struct timespec sleep_time, rem;
     int menu_option;
@@ -43,14 +42,12 @@ int main() {
     menu_option = main_menu();
     switch (menu_option) {
         case MAIN_MENU_OPTION_NEW:
-            pet_name = (char*)calloc(256, sizeof(char));
-            menu_option = new_game_menu(&pet_name);
+            menu_option = new_game_menu(&pet);
             if (menu_option == NEW_GAME_MENU_OPTION_EXIT
                     || menu_option == -1) {
                 free_config(config);
                 exit(0);
             }
-            pet = create_pet(pet_name);
             break;
         case MAIN_MENU_OPTION_LOAD:
             if (access(pet_file, R_OK) == 0) {
@@ -67,6 +64,7 @@ int main() {
             exit(0);
     }
 
+    sleep_time.tv_sec = 0;
     sleep_time.tv_nsec = 20000000L;
     while (1) {
         print_pet(pet);
@@ -94,7 +92,6 @@ int main() {
     //}
 
 EXIT:
-    free(pet_name);
     free_pet(pet);
     free_config(config);
 

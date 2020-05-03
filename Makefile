@@ -17,7 +17,7 @@ ${OUT_FILE}: ${SRC_FILES} ${H_FILES}
 .PHONY: clean debug
 
 clean:
-	rm ${OUT_FILE}
+	rm -f ${OUT_FILE}
 
 debug: ${OUT_FILE}
 	gdb ${OUT_FILE}

@@ -38,11 +38,17 @@ int set_config(Config *config, char *key, char *value) {
         strcpy(config->pets_dir, value);
         return 0;
     }
+    if (strcmp("save_dir", key) == 0) {
+        config->save_dir = (char*)malloc(sizeof(char)*strlen(value)+1);
+        strcpy(config->save_dir, value);
+        return 0;
+    }
     return -1;
 }
 
 int free_config(Config *config) {
     free(config->pets_dir);
+    free(config->save_dir);
     free(config);
     return 0;
 }

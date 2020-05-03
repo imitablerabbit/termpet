@@ -325,6 +325,7 @@ int new_game_menu(Pet **pet) {
                     cur_item = current_item(menu);
                     return_val = *(int*)item_userptr(cur_item);
                     temp_pet_name = field_buffer(fields[0], 0);
+                    trim_spaces(temp_pet_name);
                     *pet = create_pet(temp_pet_name);
                     should_quit = 1;
                     break;

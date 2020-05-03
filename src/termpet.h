@@ -1,13 +1,21 @@
 #ifndef TERMPET_H
 #define TERMPET_H
 
+// -----------------------------------------------------------------------------
 // General util functions
+// -----------------------------------------------------------------------------
 
 // trim_newlines will remove all new lines at the end of a string. The string
 // will be edited directly by moving the '\0' byte to the first '\n' byte found
 // at the end of the string. The function returns the number of new lines that
 // has been removed.
 int trim_newlines(char* s);
+
+// trim_spaces will remove all space chars at the end of a string. The string
+// will be edited directly by moving the '\0' byte to the first ' ' byte found
+// at the end of the string. The function returns the number of space chars that
+// has been removed.
+int trim_spaces(char *s);
 
 // Returns a random floating point value in between min and max. The random
 // seed should be initialised at the start of the program by calling
@@ -26,13 +34,16 @@ int max_int(int x, int y);
 // Return the smallest of the integer values.
 int min_int(int x, int y);
 
+// -----------------------------------------------------------------------------
 // Config related functions.
+// -----------------------------------------------------------------------------
 
 #define CONFIG_BUFFER_SIZE 1000
 #define CONFIG_DELIMITER "="
 
 struct config {
     char *pets_dir;
+    char *save_dir;
 };
 
 typedef struct config Config;
@@ -58,7 +69,9 @@ int free_config(Config *config);
 // returned.
 int set_config(Config *config, char *key, char *value);
 
+// -----------------------------------------------------------------------------
 // Pet related functions.
+// -----------------------------------------------------------------------------
 
 struct pet {
     char *name;
@@ -92,23 +105,6 @@ typedef struct pet Pet;
 // it's default values. Any pets created with this function should be freed
 // with the free_pet function when no longer needed.
 Pet *create_pet(char *name);
-
-// Save a pet struct to a file. The format is the same as the general config.
-// See load_config. The function takes in a pointer to a Pet object p which is
-// the pet that should be saved. It also takes in a file path which is the save
-// file destination. No checks are performed when saving to the file. Any
-// existing data will be overwritten. If the file does not exist then it will be
-// created automatically. Returns 0 if the save was successful, returns -1 if an
-// error occurred.
-int save_pet(Pet *p, char *filename);
-
-// Load a pet from a save file. The format is the same as the general config.
-// see load_config. Any pets loaded via this method should be freed when they
-// are no longer needed. Use free_pet to free the dymanically allocated memory
-// from this function. This function takes in a file path to the save file that
-// should be loaded and returns a pointer to a Pet object. If the save file
-// could not be loaded then this function will return NULL.
-Pet *load_pet(char *filename);
 
 // Sets a specific pet config value based on string inputs. This functions is
 // intended to be used with the load_pet function.
@@ -148,5 +144,54 @@ int play_with_pet(Pet *pet);
 // successful. Returns -1 if giving the medicine failed. The user is not able
 // to give the pet medicine if it is already deceased.
 int give_medicine_to_pet(Pet *pet);
+
+// -----------------------------------------------------------------------------
+// Save Files
+// -----------------------------------------------------------------------------
+
+#define MAX_SAVE_FILES 256
+
+struct save {
+    char *path;
+    Pet *pet;
+};
+
+typedef struct save Save;
+
+// Combine the dir and save file name into a save path. Returns the path as a
+// char*. The filepath returned from this function should be deallocated when
+// no longer needed. This function will return NULL if the filepath could not
+// be created.
+char *save_file_path(char *dir, char *save_name);
+
+// Read the save file directory and return list of pointers to Save structs.
+// These represent all the save files that have been found in the save
+// directory. This function will only read in MAX_SAVE_FILES amount of files
+// from the directory.
+Save **save_files(char *dir);
+
+// Loop over any loaded save files and deallocate any memory that has been
+// allocated to them.
+int free_save_files(Save **saves);
+
+// Save a pet struct to a file. The format is the same as the general config.
+// See load_config. The function takes in a pointer to a Pet object p which is
+// the pet that should be saved. It also takes in a file path which is the save
+// file destination. No checks are performed when saving to the file. Any
+// existing data will be overwritten. If the file does not exist then it will be
+// created automatically. Returns 0 if the save was successful, returns -1 if an
+// error occurred.
+Save *save_pet(Pet *p, char *save_path);
+
+// TODO: Change this function so that it receives the SAVE file struct and load
+// the pet into it.
+//
+// Load a pet from a save file. The format is the same as the general config.
+// see load_config. Any pets loaded via this method should be freed when they
+// are no longer needed. Use free_pet to free the dymanically allocated memory
+// from this function. This function takes in a file path to the save file that
+// should be loaded and returns a pointer to a Pet object. If the save file
+// could not be loaded then this function will return NULL.
+int load_pet(Save *save);
 
 #endif

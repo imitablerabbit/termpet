@@ -24,13 +24,10 @@ void print_pet(Pet *pet) {
 int main() {
     Config *config;
     char *config_file = "/home/imitablerabbit/.termpet/config";
-
-    char *pet_file = "my_pet";
     Pet *pet;
-
     int menu_option;
-
     int ch;
+    char *save_path;
 
     srand(time(NULL));
 
@@ -51,14 +48,16 @@ int main() {
             }
             break;
         case MAIN_MENU_OPTION_LOAD:
-            if (access(pet_file, R_OK) == 0) {
-                pet = load_pet(pet_file);
-                break;
-            } else {
-                printf("Error: Unable to load save %s\n", pet_file);
-                free_config(config);
-                exit(1);
-            }
+            //if (access(pet_file, R_OK) == 0) {
+            //    pet = load_pet(pet_file);
+            //    break;
+            //} else {
+            //    printf("Error: Unable to load save %s\n", pet_file);
+            //    free_config(config);
+            //    exit(1);
+            //}
+            free_config(config);
+            exit(1);
         case MAIN_MENU_OPTION_EXIT:
         default:
             free_config(config);
@@ -86,8 +85,9 @@ int main() {
         }
     }
 
-    if (save_pet(pet, pet_file) < 0) {
-        printf("Error: Unable to save pet to %s\n", pet_file);
+    save_path = save_file_path(config->save_dir, pet->name);
+    if (!save_pet(pet, save_path)) {
+        printf("Error: Unable to save pet to %s\n", save_path);
     }
 
 EXIT:

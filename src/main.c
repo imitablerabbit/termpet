@@ -28,12 +28,13 @@ int main() {
     char *pet_file = "my_pet";
     Pet *pet;
 
-    struct timespec sleep_time, rem;
     int menu_option;
+
+    int ch;
 
     srand(time(NULL));
 
-    if ((config = load_config(config_file)) < 0) {
+    if ((config = load_config(config_file)) == NULL) {
         printf("Error: unable to load config file\n");
         exit(1);
     }
@@ -64,12 +65,10 @@ int main() {
             exit(0);
     }
 
-    sleep_time.tv_sec = 0;
-    sleep_time.tv_nsec = 20000000L;
-    while (1) {
+    timeout(10);
+    while ((ch = getch()) != 'q') {
         print_pet(pet);
         update_pet(pet);
-        nanosleep(&sleep_time, &rem);
 
         if (pet->current_hunger <= 0.5) {
             feed_pet(pet);
@@ -87,9 +86,9 @@ int main() {
         }
     }
 
-    //if (save_pet(pet, pet_file) < 0) {
-    //    printf("Error: Unable to save pet to %s\n", pet_file);
-    //}
+    if (save_pet(pet, pet_file) < 0) {
+        printf("Error: Unable to save pet to %s\n", pet_file);
+    }
 
 EXIT:
     free_pet(pet);

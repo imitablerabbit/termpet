@@ -2,11 +2,21 @@
 
 ## Todo
 
+- Create main game screen.
+    - Pet art window.
+    - Pet interaction menu.
+    - Pet stats window.
 - Secondary menu options.
     - Load pet form/menu
 - Read in general config file which describes the overall setup of the game.
     - Create a complete default config file.
     - Config option to load save files from directory.
+    - Config option for directory to find the pet art.
+    - Config option to find the pet personality types.
+- Create some pet art
+    - Simple smiley face
+- Design personality file system.
+- Create some personality files. These will give base values for the pets.
 - Main game play UI.
     - Termpet ascii art window
     - Stats window

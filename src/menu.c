@@ -413,6 +413,7 @@ int load_game_menu(Config *config, Save **save) {
     menu_window = newwin(7, width, starty+2, startx);
     set_menu_win(menu, menu_window);
     set_menu_sub(menu, derwin(menu_window, 0, 0, 1, 1));
+    set_menu_format(menu, 5, 1);
     init_menu(menu, menu_window);
     box(menu_window, 0, 0);
     deactivate_menu(menu);
@@ -438,8 +439,6 @@ int load_game_menu(Config *config, Save **save) {
                     break;
                 }
 
-                // TODO: Get the save file object from menu item here. We should
-                // check if it is the exit menu option first though.
                 cur_item = current_item(menu);
                 i = item_index(cur_item);
                 should_quit = 1;

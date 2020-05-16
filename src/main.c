@@ -7,27 +7,30 @@
 #include <time.h>
 #include <string.h>
 
+#include <ncurses.h>
+
 char status_line[100];
 
 void print_pet(Pet *pet) {
-    printf("\e[1;1H\e[2J");
-    printf("Name: %s\n", pet->name);
-    printf("Age: %d\n", pet->age);
-    printf("Health: %d/%d\n", pet->health, pet->max_health);
-    printf("Hunger: %f\n", pet->current_hunger);
-    printf("Happiness: %f\n", pet->current_happiness);
-    printf("Is Sick: %d\n", pet->is_sick);
-    printf("Is Dead: %d\n", pet->is_dead);
-    printf("\nStatus: %s\n", status_line);
+    clear();
+    printw("Name: %s\n", pet->name);
+    printw("Age: %d\n", pet->age);
+    printw("Health: %d/%d\n", pet->health, pet->max_health);
+    printw("Hunger: %f\n", pet->current_hunger);
+    printw("Happiness: %f\n", pet->current_happiness);
+    printw("Is Sick: %d\n", pet->is_sick);
+    printw("Is Dead: %d\n", pet->is_dead);
+    printw("\nStatus: %s\n", status_line);
 }
 
 int main() {
     Config *config;
     char *config_file = "/home/imitablerabbit/.termpet/config";
-    Pet *pet;
+    Pet *pet = NULL;
     int menu_option;
     int ch;
     char *save_path;
+    Save *save = NULL;
 
     srand(time(NULL));
 
@@ -48,16 +51,15 @@ int main() {
             }
             break;
         case MAIN_MENU_OPTION_LOAD:
-            //if (access(pet_file, R_OK) == 0) {
-            //    pet = load_pet(pet_file);
-            //    break;
-            //} else {
-            //    printf("Error: Unable to load save %s\n", pet_file);
-            //    free_config(config);
-            //    exit(1);
-            //}
-            free_config(config);
-            exit(1);
+            menu_option = load_game_menu(config, &save);
+            if (menu_option == LOAD_GAME_MENU_OPTION_EXIT
+                    || menu_option == -1) {
+                free_config(config);
+                exit(0);
+            }
+            copy_pet(&pet, save->pet);
+            free_save(save);
+            break;
         case MAIN_MENU_OPTION_EXIT:
         default:
             free_config(config);
@@ -86,13 +88,15 @@ int main() {
     }
 
     save_path = save_file_path(config->save_dir, pet->name);
-    if (!save_pet(pet, save_path)) {
+    save = save_pet(pet, save_path);
+    if (save == NULL) {
         printf("Error: Unable to save pet to %s\n", save_path);
     }
+    free_save(save);
 
 EXIT:
     free_pet(pet);
     free_config(config);
-
+    endwin();
     return 0;
 }

@@ -36,6 +36,10 @@ int activate_form(FORM *f);
 // and unable to respond to any user interaction.
 int deactivate_form(FORM *f);
 
+// -----------------------------------------------------------------------------
+// Menu Drivers
+// -----------------------------------------------------------------------------
+
 #define MENU_DRIVER_EXIT_UP 1
 #define MENU_DRIVER_EXIT_DOWN 2
 #define MENU_DRIVER_SELECTED 3
@@ -58,6 +62,10 @@ int deactivate_form(FORM *f);
 // -1 is returned if there was an error.
 int menu_handler(MENU *m, int ch, ITEM** current);
 
+// -----------------------------------------------------------------------------
+// Form Drivers
+// -----------------------------------------------------------------------------
+
 #define FORM_DRIVER_EXIT_UP 1
 #define FORM_DRIVER_EXIT_DOWN 2
 
@@ -72,6 +80,10 @@ int menu_handler(MENU *m, int ch, ITEM** current);
 //
 // -1 is returned if there was an error.
 int form_handler(FORM *f, int ch);
+
+// -----------------------------------------------------------------------------
+// Main Menu
+// -----------------------------------------------------------------------------
 
 #define TITLE_TEXT "termpet - Tamagotchi for the terminal"
 
@@ -108,7 +120,9 @@ static const int main_menu_item_data[] = {
 // MAIN_MENU_OPTION_LOAD or MAIN_MENU_OPTION_EXIT.
 int main_menu();
 
+// -----------------------------------------------------------------------------
 // New Game Menu
+// -----------------------------------------------------------------------------
 
 #define NEW_GAME_MENU_TEXT "termpet - New Game"
 
@@ -132,6 +146,37 @@ static const int new_game_menu_item_data[] = {
     NEW_GAME_MENU_OPTION_EXIT,
 };
 
+// Starts the ncurses new game menu for the termpet. This will allow the user to
+// create a new pet and specifiy some information for it. This function will
+// block until the user has filled out the form or quit.
+//
+// Returns -1 if there was an error playing the game. Otherwise it will return
+// the menu option that was selected. This can be either
+// NEW_GAME_MENU_OPTION_START or NEW_GAME_MENU_OPTION_EXIT.
 int new_game_menu(Pet **pet);
+
+// -----------------------------------------------------------------------------
+// Load Game Menu
+// -----------------------------------------------------------------------------
+
+#define LOAD_GAME_MENU_TEXT "termpet - Load Game"
+
+#define LOAD_GAME_MENU_OPTION_START 0
+#define LOAD_GAME_MENU_OPTION_EXIT 1
+
+#define LOAD_GAME_MENU_OPTION_EXIT_TEXT "Exit"
+#define LOAD_GAME_MENU_OPTION_EXIT_DESCRIPTION "Exit the game"
+
+// Generates a load game menu. This menu is slightly different to the other in
+// that the data used in the menu will be dynamically added rather than being a
+// statuc list of options. The menu options will be a list of all the save file
+// names and a final exit option.
+//
+// Returns -1 if there was an error using the menu. Otherwise it will return
+// the menu option that was selected. This can be either
+// LOAD_GAME_MENU_OPTION_START or LOAD_GAME_MENU_OPTION_EXIT. Whenever a save
+// file is selected, the LOAD_GAME_MENU_OPTION_START will be returned and the
+// Save *s will be populated with the selected option.
+int load_game_menu(Config *config, Save **save);
 
 #endif

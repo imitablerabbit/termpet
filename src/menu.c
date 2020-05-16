@@ -364,3 +364,105 @@ EXIT:
     endwin();
     return return_val;
 }
+
+int load_game_menu(Config *config, Save **save) {
+    WINDOW *menu_window;
+    MENU *menu;
+    ITEM **menu_items;
+    ITEM *cur_item;
+
+    Save **saves, **save_iter;
+    int save_count;
+
+    int i;
+    int c;
+    int startx, starty;
+    int width;
+
+    int name_width;
+    char format[10];
+
+    int should_quit;
+    int return_val;
+
+    saves = save_files(config->save_dir);
+
+    wclear(stdscr);
+    startx = COLS/10;
+    starty = (LINES-9)/2;
+    width = COLS-(startx*2);
+    name_width = (width/2)-4;
+    sprintf(format, "%%-%ds", name_width);
+
+    // Count the number of save files so we can allocate enough space in the
+    // menu item list.
+    for (save_iter = saves; *save_iter; save_iter++);
+    save_count = save_iter - saves;
+    menu_items = (ITEM**)calloc(save_count+2, sizeof(ITEM*));
+    save_iter = saves;
+    for (i = 0; i < save_count; i++, save_iter++) {
+        menu_items[i] = new_item((*save_iter)->name,
+                new_game_menu_descriptions[i]);
+    }
+    menu_items[i] = new_item(LOAD_GAME_MENU_OPTION_EXIT_TEXT,
+            LOAD_GAME_MENU_OPTION_EXIT_DESCRIPTION);
+    i++;
+    menu_items[i] = NULL;
+
+    menu = new_menu(menu_items);
+    menu_window = newwin(7, width, starty+2, startx);
+    set_menu_win(menu, menu_window);
+    set_menu_sub(menu, derwin(menu_window, 0, 0, 1, 1));
+    init_menu(menu, menu_window);
+    box(menu_window, 0, 0);
+    deactivate_menu(menu);
+    post_menu(menu);
+
+    refresh();
+    wrefresh(menu_window);
+
+    mvprintw(starty, (COLS-strlen(LOAD_GAME_MENU_TEXT))/2,
+            LOAD_GAME_MENU_TEXT);
+
+    should_quit = 0;
+    return_val = -1;
+    while (should_quit != 1 ) {
+        wrefresh(menu_window);
+        c = wgetch(menu_window);
+        switch (menu_handler(menu, c, &cur_item)) {
+            case -1:
+                should_quit = 1;
+                break;
+            case MENU_DRIVER_SELECTED:
+                if (cur_item == NULL) {
+                    break;
+                }
+
+                // TODO: Get the save file object from menu item here. We should
+                // check if it is the exit menu option first though.
+                cur_item = current_item(menu);
+                i = item_index(cur_item);
+                should_quit = 1;
+                if (i < save_count) {
+                    return_val = LOAD_GAME_MENU_OPTION_START;
+                    copy_save(save, saves[i]);
+                    load_pet(*save);
+                } else if (i == save_count) {
+                    return_val = LOAD_GAME_MENU_OPTION_EXIT;
+                }
+                break;
+        }
+        pos_menu_cursor(menu);
+    }
+
+EXIT:
+    free_save_files(saves);
+    unpost_menu(menu);
+    free_menu(menu);
+    for (i = 0; i < save_count+1; i++) {
+        free_item(menu_items[i]);
+    }
+    free(menu_items);
+    endwin();
+    return return_val;
+}

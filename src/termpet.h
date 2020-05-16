@@ -106,16 +106,21 @@ typedef struct pet Pet;
 // with the free_pet function when no longer needed.
 Pet *create_pet(char *name);
 
-// Sets a specific pet config value based on string inputs. This functions is
-// intended to be used with the load_pet function.
-// Returns 0 if the config value was correctly set. Returns -1 if an error
-// occured. An unknown pet config key would mean this function returns -1.
-int set_pet_config(Pet *pet, char *key, char *value);
+// Deep copy of a pet object. If dst is NULL then all the memory will be
+// allocated for you. Returns -1 if there was an error copying the pet.
+// Returns 0 if the pet was copied successfully.
+int copy_pet(Pet **dst, Pet *src);
 
 // Free any dynamically allocated memory used for the passed in Pet. This
 // function should be called whenever the pet object is no longer needed.
 // Returns 0 if successful
 int free_pet(Pet *pet);
+
+// Sets a specific pet config value based on string inputs. This functions is
+// intended to be used with the load_pet function.
+// Returns 0 if the config value was correctly set. Returns -1 if an error
+// occured. An unknown pet config key would mean this function returns -1.
+int set_pet_config(Pet *pet, char *key, char *value);
 
 // Updates the pets internal values. This function signifies the passage of
 // time. It should be called inside of a game loop.
@@ -152,6 +157,7 @@ int give_medicine_to_pet(Pet *pet);
 #define MAX_SAVE_FILES 256
 
 struct save {
+    char *name;
     char *path;
     Pet *pet;
 };
@@ -170,9 +176,16 @@ char *save_file_path(char *dir, char *save_name);
 // from the directory.
 Save **save_files(char *dir);
 
+// Deep copy one save file into another. If dst is NULL, then the memory will
+// be allocated from scratch.
+int copy_save(Save **dst, Save *src);
+
+// Deallocates all the memory associated with a save file
+void free_save(Save *s);
+
 // Loop over any loaded save files and deallocate any memory that has been
 // allocated to them.
-int free_save_files(Save **saves);
+void free_save_files(Save **saves);
 
 // Save a pet struct to a file. The format is the same as the general config.
 // See load_config. The function takes in a pointer to a Pet object p which is

@@ -22,6 +22,9 @@ clean:
 debug: ${OUT_FILE}
 	gdb ${OUT_FILE}
 
-valgrind: ${OUT_FILE}
+valgrind-all: ${OUT_FILE}
 	valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all \
-		--trace-children=yes --track-fds=yes ./${OUT_FILE}
+		--trace-children=yes --track-fds=yes --track-origins=yes ./${OUT_FILE}
+
+valgrind: ${OUT_FILE}
+	valgrind --tool=memcheck --trace-children=yes --track-fds=yes ./${OUT_FILE}

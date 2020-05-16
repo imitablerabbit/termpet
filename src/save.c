@@ -102,15 +102,21 @@ int copy_save(Save **dst, Save *src) {
 }
 
 void free_save(Save *s) {
-    if (!s)
+    if (s == NULL)
         return;
 
-    if (s->name != NULL)
+    if (s->name != NULL) {
         free(s->name);
-    if (s->path != NULL)
+        s->name = NULL;
+    }
+    if (s->path != NULL) {
         free(s->path);
-    if (s->pet != NULL)
+        s->path = NULL;
+    }
+    if (s->pet != NULL) {
         free_pet(s->pet);
+        s->pet = NULL;
+    }
     free(s);
 }
 
@@ -131,12 +137,31 @@ Save *save_pet(Pet *pet, char *save_path) {
     FILE *f = NULL;
     Save *s = NULL;
 
+    if (pet == NULL)
+        return NULL;
+    if (save_path == NULL)
+        return NULL;
+
     s = (Save*)malloc(sizeof(Save));
-    s->path = save_path;
-    s->pet = pet;
+    if (s == NULL)
+        return NULL;
+
+    s->path = (char*)calloc(strlen(save_path), sizeof(char));
+    if (s->path == NULL) {
+        free(s);
+        return NULL;
+    }
+    strcpy(s->path, save_path);
+
+    s->name = NULL;
+
+    if (copy_pet(&s->pet, pet) < 0) {
+        free(s->path);
+        free(s);
+        return NULL;
+    }
 
     if ((f = fopen(s->path, "w")) == NULL) {
-        free(s->path);
         free(s);
         return NULL;
     }

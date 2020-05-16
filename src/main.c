@@ -91,6 +91,7 @@ int main() {
     save = save_pet(pet, save_path);
     if (save == NULL) {
         printf("Error: Unable to save pet to %s\n", save_path);
+        goto EXIT;
     }
     free_save(save);
 

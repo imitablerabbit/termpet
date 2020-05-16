@@ -190,7 +190,7 @@ int main_menu() {
     activate_menu(menu);
     post_menu(menu);
 
-    mvprintw((LINES/2)-MAIN_MENU_ITEM_COUNT-1, (COLS-strlen(TITLE_TEXT))/2,
+    mvprintw(starty, (COLS-strlen(TITLE_TEXT))/2,
             TITLE_TEXT);
 
     refresh();
@@ -290,13 +290,13 @@ int new_game_menu(Pet **pet) {
     activate_form(form);
     post_form(form);
 
-    refresh();
-    wrefresh(menu_window);
-    wrefresh(form_window);
-
     mvprintw(starty, (COLS-strlen(NEW_GAME_MENU_TEXT))/2,
             NEW_GAME_MENU_TEXT);
     mvwprintw(form_window, 0, 0, "Pet Name:");
+
+    refresh();
+    wrefresh(menu_window);
+    wrefresh(form_window);
 
     should_quit = 0;
     return_val = -1;
@@ -418,11 +418,11 @@ int load_game_menu(Config *config, Save **save) {
     deactivate_menu(menu);
     post_menu(menu);
 
-    refresh();
-    wrefresh(menu_window);
-
     mvprintw(starty, (COLS-strlen(LOAD_GAME_MENU_TEXT))/2,
             LOAD_GAME_MENU_TEXT);
+
+    refresh();
+    wrefresh(menu_window);
 
     should_quit = 0;
     return_val = -1;

@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 Pet *create_pet(char *name) {
-    Pet *pet;
+    Pet *pet = NULL;
 
     pet = (Pet*)malloc(sizeof(Pet));
 
@@ -35,6 +35,31 @@ Pet *create_pet(char *name) {
     pet->is_dead=0;
 
     return pet;
+}
+
+int copy_pet(Pet **dst, Pet *src) {
+    Pet *dst_temp;
+
+    if (src == NULL)
+        return -1;
+
+    dst_temp = (Pet*)malloc(sizeof(Pet));
+    if (dst_temp == NULL)
+        return -1;
+
+    memcpy(dst_temp, src, sizeof(Pet));
+
+    if (src->name != NULL) {
+        dst_temp->name = (char*)calloc(strlen(src->name)+1, sizeof(char));
+        if (!dst_temp->name) {
+            free(dst_temp);
+            return -1;
+        }
+        strcpy(dst_temp->name, src->name);
+    }
+
+    *dst = dst_temp;
+    return 0;
 }
 
 int set_pet_config(Pet *pet, char *key, char *value) {
@@ -121,7 +146,11 @@ int set_pet_config(Pet *pet, char *key, char *value) {
 }
 
 int free_pet(Pet *pet) {
-    free(pet->name);
+    if (pet == NULL)
+        return -1;
+
+    if (pet->name != NULL)
+        free(pet->name);
     free(pet);
     return 0;
 }

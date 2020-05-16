@@ -89,6 +89,7 @@ int main() {
 
     save_path = save_file_path(config->save_dir, pet->name);
     save = save_pet(pet, save_path);
+    free(save_path);
     if (save == NULL) {
         printf("Error: Unable to save pet to %s\n", save_path);
         goto EXIT;

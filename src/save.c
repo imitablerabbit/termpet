@@ -146,7 +146,7 @@ Save *save_pet(Pet *pet, char *save_path) {
     if (s == NULL)
         return NULL;
 
-    s->path = (char*)calloc(strlen(save_path), sizeof(char));
+    s->path = (char*)calloc(strlen(save_path)+1, sizeof(char));
     if (s->path == NULL) {
         free(s);
         return NULL;

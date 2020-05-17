@@ -9,20 +9,6 @@
 
 #include <ncurses.h>
 
-char status_line[100];
-
-void print_pet(Pet *pet) {
-    clear();
-    printw("Name: %s\n", pet->name);
-    printw("Age: %d\n", pet->age);
-    printw("Health: %d/%d\n", pet->health, pet->max_health);
-    printw("Hunger: %f\n", pet->current_hunger);
-    printw("Happiness: %f\n", pet->current_happiness);
-    printw("Is Sick: %d\n", pet->is_sick);
-    printw("Is Dead: %d\n", pet->is_dead);
-    printw("\nStatus: %s\n", status_line);
-}
-
 int main() {
     Config *config;
     char *config_file = "/home/imitablerabbit/.termpet/config";
@@ -67,25 +53,7 @@ int main() {
     }
 
     timeout(10);
-    while ((ch = getch()) != 'q') {
-        print_pet(pet);
-        update_pet(pet);
-
-        if (pet->current_hunger <= 0.5) {
-            feed_pet(pet);
-            sprintf(status_line, "Fed pet at age %d", pet->age);
-        }
-
-        if (pet->current_happiness <= 0.5){
-            play_with_pet(pet);
-            sprintf(status_line, "Played with pet at age %d", pet->age);
-        }
-
-        if (pet->health <= 8){
-            give_medicine_to_pet(pet);
-            sprintf(status_line, "Gave medicine to pet at age %d", pet->age);
-        }
-    }
+    game_loop(config, pet);
 
     save_path = save_file_path(config->save_dir, pet->name);
     save = save_pet(pet, save_path);

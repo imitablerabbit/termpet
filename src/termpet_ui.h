@@ -179,4 +179,40 @@ int new_game_menu(Pet **pet);
 // Save *s will be populated with the selected option.
 int load_game_menu(Config *config, Save **save);
 
+// -----------------------------------------------------------------------------
+// Game Loop
+// -----------------------------------------------------------------------------
+
+#define GAME_LOOP_TITLE_FORMAT "termpet - %s"
+
+#define GAME_LOOP_MENU_OPTION_FEED 0
+#define GAME_LOOP_MENU_OPTION_PLAY 1
+#define GAME_LOOP_MENU_OPTION_MEDICINE 2
+#define GAME_LOOP_MENU_OPTION_EXIT 3
+
+#define GAME_LOOP_MENU_ITEM_COUNT 4
+
+static const char *game_loop_menu_choices[] = {
+    "Feed pet",
+    "Play with pet",
+    "Give pet medicine",
+    "Exit",
+};
+
+static const char *game_loop_menu_descriptions[] = {
+    "Give the pet some food. Decreases hunger levels.",
+    "Play games with the pet. Increases happiness.",
+    "Gives medicine to the pet. Heals sickness and increses health.",
+    "Saves and exits the game.",
+};
+
+static const int game_loop_menu_item_data[] = {
+    GAME_LOOP_MENU_OPTION_FEED,
+    GAME_LOOP_MENU_OPTION_PLAY,
+    GAME_LOOP_MENU_OPTION_MEDICINE,
+    GAME_LOOP_MENU_OPTION_EXIT,
+};
+
+int game_loop(Config *config, Pet *pet);
+
 #endif

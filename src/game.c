@@ -168,6 +168,7 @@ int game_loop(Config *config, Pet *pet) {
     }
 
 EXIT:
+    unpost_menu(menu);
     free_menu(menu);
     for (i = 0; i < GAME_LOOP_MENU_ITEM_COUNT; i++) {
         free_item(menu_items[i]);

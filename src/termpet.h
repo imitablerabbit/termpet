@@ -78,14 +78,18 @@ struct pet {
     int age;
 
     float current_hunger;
+    float max_hunger;
     float hunger_decrease_chance;
     float hunger_decrease_amount;
 
     float current_happiness;
+    float max_happiness;
     float happiness_decrease_chance;
     float happiness_decrease_amount;
 
     float current_sickness_chance;
+    float max_sickness_chance;
+    float min_sickness_chance;
     float sickness_increase_amount;
     float sickness_hunger_threshold;
     float sickness_happiness_threshold;

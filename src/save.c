@@ -166,25 +166,29 @@ Save *save_pet(Pet *pet, char *save_path) {
         return NULL;
     }
 
-    fprintf(f, "name" CONFIG_DELIMITER "%s\n", pet->name);
-    fprintf(f, "age" CONFIG_DELIMITER "%d\n", pet->age);
+    fprintf(f, "name"   CONFIG_DELIMITER "%s\n", pet->name);
+    fprintf(f, "age"    CONFIG_DELIMITER "%d\n", pet->age);
 
-    fprintf(f, "current_hunger" CONFIG_DELIMITER "%f\n", pet->current_hunger);
+    fprintf(f, "current_hunger"         CONFIG_DELIMITER "%f\n", pet->current_hunger);
+    fprintf(f, "max_hunger"             CONFIG_DELIMITER "%f\n", pet->max_hunger);
     fprintf(f, "hunger_decrease_chance" CONFIG_DELIMITER "%f\n", pet->hunger_decrease_chance);
     fprintf(f, "hunger_decrease_amount" CONFIG_DELIMITER "%f\n", pet->hunger_decrease_amount);
 
-    fprintf(f, "current_happiness" CONFIG_DELIMITER "%f\n", pet->current_happiness);
-    fprintf(f, "happiness_decrease_chance" CONFIG_DELIMITER "%f\n", pet->happiness_decrease_chance);
-    fprintf(f, "happiness_decrease_amount" CONFIG_DELIMITER "%f\n", pet->happiness_decrease_amount);
+    fprintf(f, "current_happiness"          CONFIG_DELIMITER "%f\n", pet->current_happiness);
+    fprintf(f, "max_happiness"              CONFIG_DELIMITER "%f\n", pet->max_happiness);
+    fprintf(f, "happiness_decrease_chance"  CONFIG_DELIMITER "%f\n", pet->happiness_decrease_chance);
+    fprintf(f, "happiness_decrease_amount"  CONFIG_DELIMITER "%f\n", pet->happiness_decrease_amount);
 
-    fprintf(f, "current_sickness_chance" CONFIG_DELIMITER "%f\n", pet->current_sickness_chance);
-    fprintf(f, "sickness_increase_amount" CONFIG_DELIMITER "%f\n", pet->sickness_increase_amount);
-    fprintf(f, "sickness_hunger_threshold" CONFIG_DELIMITER "%f\n", pet->sickness_hunger_threshold);
-    fprintf(f, "sickness_happiness_threshold" CONFIG_DELIMITER "%f\n", pet->sickness_happiness_threshold);
+    fprintf(f, "current_sickness_chance"        CONFIG_DELIMITER "%f\n", pet->current_sickness_chance);
+    fprintf(f, "max_sickness_chance"            CONFIG_DELIMITER "%f\n", pet->max_sickness_chance);
+    fprintf(f, "min_sickness_chance"            CONFIG_DELIMITER "%f\n", pet->min_sickness_chance);
+    fprintf(f, "sickness_increase_amount"       CONFIG_DELIMITER "%f\n", pet->sickness_increase_amount);
+    fprintf(f, "sickness_hunger_threshold"      CONFIG_DELIMITER "%f\n", pet->sickness_hunger_threshold);
+    fprintf(f, "sickness_happiness_threshold"   CONFIG_DELIMITER "%f\n", pet->sickness_happiness_threshold);
 
-    fprintf(f, "health" CONFIG_DELIMITER "%d\n", pet->health);
-    fprintf(f, "max_health" CONFIG_DELIMITER "%d\n", pet->max_health);
-    fprintf(f, "health_change" CONFIG_DELIMITER "%d\n", pet->health_change);
+    fprintf(f, "health"                 CONFIG_DELIMITER "%d\n", pet->health);
+    fprintf(f, "max_health"             CONFIG_DELIMITER "%d\n", pet->max_health);
+    fprintf(f, "health_change"          CONFIG_DELIMITER "%d\n", pet->health_change);
     fprintf(f, "health_decrease_chance" CONFIG_DELIMITER "%f\n", pet->health_decrease_chance);
 
     fprintf(f, "is_sick" CONFIG_DELIMITER "%d\n", pet->is_sick);

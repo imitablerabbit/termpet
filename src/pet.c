@@ -14,14 +14,18 @@ Pet *create_pet(char *name) {
     pet->age = 0;
 
     pet->current_hunger=1.0;
+    pet->max_hunger=1.0;
     pet->hunger_decrease_chance=0.01;
     pet->hunger_decrease_amount=0.1;
 
     pet->current_happiness=1.0;
+    pet->max_happiness=1.0;
     pet->happiness_decrease_chance=0.01;
     pet->happiness_decrease_amount=0.1;
 
     pet->current_sickness_chance=0.001;
+    pet->max_sickness_chance=0.2;
+    pet->min_sickness_chance=0.001;
     pet->sickness_increase_amount=0.001;
     pet->sickness_hunger_threshold=0.4;
     pet->sickness_happiness_threshold=0.3;
@@ -78,6 +82,10 @@ int set_pet_config(Pet *pet, char *key, char *value) {
         pet->current_hunger = atof(value);
         return 0;
     }
+    if (strcmp("max_hunger", key) == 0) {
+        pet->max_hunger = atof(value);
+        return 0;
+    }
     if (strcmp("hunger_decrease_chance", key) == 0) {
         pet->hunger_decrease_chance = atof(value);
         return 0;
@@ -91,6 +99,10 @@ int set_pet_config(Pet *pet, char *key, char *value) {
         pet->current_happiness = atof(value);
         return 0;
     }
+    if (strcmp("max_happiness", key) == 0) {
+        pet->max_happiness = atof(value);
+        return 0;
+    }
     if (strcmp("happiness_decrease_chance", key) == 0) {
         pet->happiness_decrease_chance = atof(value);
         return 0;
@@ -102,6 +114,14 @@ int set_pet_config(Pet *pet, char *key, char *value) {
 
     if (strcmp("current_sickness_chance", key) == 0) {
         pet->current_sickness_chance = atof(value);
+        return 0;
+    }
+    if (strcmp("max_sickness_chance", key) == 0) {
+        pet->max_sickness_chance = atof(value);
+        return 0;
+    }
+    if (strcmp("min_sickness_chance", key) == 0) {
+        pet->min_sickness_chance = atof(value);
         return 0;
     }
     if (strcmp("sickness_increase_amount", key) == 0) {
@@ -178,7 +198,8 @@ int update_pet(Pet *pet) {
 
     pet->current_hunger = max_float(0.0, pet->current_hunger);
     pet->current_happiness = max_float(0.0, pet->current_happiness);
-    pet->current_sickness_chance = min_float(1.0, pet->current_sickness_chance);
+    pet->current_sickness_chance = min_float(pet->max_sickness_chance,
+            pet->current_sickness_chance);
     pet->health = max_int(0, pet->health);
 
     if (random_float(0.0, 1.0) < pet->current_sickness_chance)
@@ -205,7 +226,7 @@ int feed_pet(Pet *pet) {
         return -1;
 
     pet->current_hunger += 0.5;
-    pet->current_hunger = max_float(1.0, pet->current_hunger);
+    pet->current_hunger = min_float(pet->max_hunger, pet->current_hunger);
     return 0;
 }
 
@@ -214,7 +235,7 @@ int play_with_pet(Pet *pet) {
         return -1;
 
     pet->current_happiness += 0.5;
-    pet->current_happiness = max_float(1.0, pet->current_happiness);
+    pet->current_happiness = min_float(pet->max_happiness, pet->current_happiness);
     return 0;
 }
 
@@ -223,7 +244,7 @@ int give_medicine_to_pet(Pet *pet) {
         return -1;
 
     pet->is_sick = 0;
-    pet->current_sickness_chance = 0.001;
+    pet->current_sickness_chance = pet->min_sickness_chance;
     pet->health += 1;
     pet->health = min_int(pet->max_health, pet->health);
     return 0;

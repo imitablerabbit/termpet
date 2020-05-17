@@ -14,7 +14,9 @@ OUT_FILE=termpet
 ${OUT_FILE}: ${SRC_FILES} ${H_FILES}
 	gcc -o ${OUT_FILE} ${CFLAGS} ${CLIBS} ${SRC_FILES}
 
-.PHONY: clean debug
+.PHONY: compile clean debug valgrind valgrind-all
+
+compile: ${OUT_FILE}
 
 clean:
 	rm -f ${OUT_FILE}
@@ -24,7 +26,8 @@ debug: ${OUT_FILE}
 
 valgrind-all: ${OUT_FILE}
 	valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all \
-		--trace-children=yes --track-fds=yes --track-origins=yes ./${OUT_FILE}
+		--trace-children=yes --track-fds=yes --track-origins=yes \
+		--show-error-list=yes ./${OUT_FILE}
 
 valgrind: ${OUT_FILE}
 	valgrind --tool=memcheck --trace-children=yes --track-fds=yes ./${OUT_FILE}
